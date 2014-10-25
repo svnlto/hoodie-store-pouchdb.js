@@ -156,9 +156,13 @@ Implement events
 
 ### Step 4
 
-Implement custom stores
+Implement `hasLocalChanges` and `changedObjects`
 
 ### Step 5
+
+Implement custom stores
+
+### Step 6
 
 Think & Dream on
 
