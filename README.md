@@ -12,11 +12,18 @@ and `hoodie.remote` API.
 // all methods return promises
 hoodie.store.add(properties)
 hoodie.store.find(id)
+hoodie.store.find(object) // with id property
 hoodie.store.findOrAdd(id, properties)
+hoodie.store.findOrAdd(object)
 hoodie.store.findAll()
+hoodie.store.findAll(filterFunction)
 hoodie.store.update(id, changedProperties)
+hoodie.store.update(id, updateFunction)
+hoodie.store.update(object)
 hoodie.store.updateOrAdd(id, properties)
+hoodie.store.updateOrAdd(object)
 hoodie.store.updateAll(changedProperties)
+hoodie.store.updateAll(updateFunction)
 hoodie.store.remove(id)
 hoodie.store.removeAll()
 hoodie.store.clear()
