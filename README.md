@@ -134,6 +134,15 @@ isolated from the current Hoodie codebase.
 
 ### Step 1
 
+Implement start/stop sync methods
+
+```js
+hoodie.store.connect()
+hoodie.store.disconnect()
+```
+
+### Step 2
+
 Implement the basic store methods
 
 ```js
@@ -149,38 +158,22 @@ hoodie.store.removeAll()
 hoodie.store.clear()
 ```
 
-### Step 2
-
-Implement sync methods
-
-```js
-hoodie.store.pull()
-hoodie.store.push(/*objects*/)
-hoodie.store.sync(/*objects*/)
-hoodie.store.disconnect()
-```
-
 ### Step 3
 
-Implement events
+Create basic test setup
+
+1. start local server with own couch (compare Hoodie setup)
+2. write tests for Steps 1 & 2
 
 ### Step 4
 
-Implement `hasLocalChanges` and `changedObjects`
+Implement events
 
 ### Step 5
 
-Implement custom stores
+Implement `hasLocalChanges` and `changedObjects`
 
-### Step 6
 
-Think & Dream on
-
-- separated local databases
-- syncing with other remote databases
-- validations
-- views
-- ...
 
 ## Questions / Ideas?
 
