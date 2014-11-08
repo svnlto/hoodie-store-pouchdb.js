@@ -4,8 +4,8 @@
   "description": "Hoodie Store meets PouchDB ==========================",
   "main": "index.js",
   "scripts": {
-    "watch": "watchify src/hoodie-store-pouchdb.js -o dist/hoodie-store-pouchdb.js --standalone hoodie -v",
-    "build": "browserify src/hoodie-store-pouchdb.js -o dist/hoodie-store-pouchdb.js --standalone hoodie ",
+    "watch": "watchify src/hoodie-store-pouchdb.js -o dist/hoodie-store-pouchdb.js -v",
+    "build": "browserify src/hoodie-store-pouchdb.js -o dist/hoodie-store-pouchdb.js",
     "test": "node node_modules/mocha/bin/mocha -R spec test/index.js"
   },
   "repository": {
