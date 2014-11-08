@@ -141,16 +141,23 @@ module.exports = global.hoodie.plugin(function() {
    *
    */
   store.updateAll = function (changedProperties) {
+    var updatedObjects;
     return store.findAll()
     .then(function(objects) {
-      var documents = objects.map(function(object) {
-        extend(object, changedProperties);
+      var documents;
+      updatedObjects = objects.map(function(object) {
+        return extend(object, changedProperties);
+      });
+      documents = updatedObjects.map(function(object) {
         return mapObjectToCouchDbDoc(object);
       });
       return db.bulkDocs(documents);
     })
-    .then(function() {
-      return store.findAll();
+    .then(function(response) {
+      response.forEach(function(document, i) {
+        updatedObjects[i]._rev = document.rev;
+      });
+      return updatedObjects;
     });
   };
 
@@ -201,12 +208,12 @@ module.exports = global.hoodie.plugin(function() {
     });
   }
   function mapObjectToCouchDbDoc(object) {
-    var document = extend(true, object, {_id: object.id});
+    var document = extend({}, object, {_id: object.id});
     delete document.id;
     return document;
   }
   function mapCouchDbDocToObject(document) {
-    var object = extend(true, document, {id: document._id});
+    var object = extend({}, document, {id: document._id});
     delete object._id;
     return object;
   }
