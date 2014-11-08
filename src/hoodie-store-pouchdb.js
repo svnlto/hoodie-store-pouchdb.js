@@ -183,10 +183,23 @@ module.exports = global.hoodie.plugin(function() {
    *
    */
   store.removeAll = function () {
+    var updatedObjects;
     return store.findAll()
     .then(function(objects) {
-      var promises = objects.map(store.remove);
-      return Promise.all(promises);
+      var documents;
+      updatedObjects = objects;
+      documents = objects.map(function(object) {
+        var document = mapObjectToCouchDbDoc(object);
+        document._deleted = true;
+        return document;
+      });
+      return db.bulkDocs(documents);
+    })
+    .then(function(response) {
+      response.forEach(function(document, i) {
+        updatedObjects[i]._rev = document.rev;
+      });
+      return updatedObjects;
     });
   };
 
