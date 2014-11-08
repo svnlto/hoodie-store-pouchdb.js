@@ -132,7 +132,7 @@ isolated from the current Hoodie codebase.
   and create a new database "user/hoodieid", then hard code the
   remote location to http://localhost:5984/user%2fhoodieid
 
-### Step 1
+### Step 1 ✔
 
 Implement start/stop sync methods
 
@@ -141,7 +141,7 @@ hoodie.store.connect()
 hoodie.store.disconnect()
 ```
 
-### Step 2
+### Step 2 (wip)
 
 Implement the basic store methods
 
@@ -158,7 +158,7 @@ hoodie.store.removeAll()
 hoodie.store.clear()
 ```
 
-### Step 3
+### Step 3 (wip)
 
 Create basic test setup
 
