@@ -4,7 +4,9 @@
   "description": "Hoodie Store meets PouchDB ==========================",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "watchify src/hoodie-store-pouchdb.js -o dist/hoodie-store-pouchdb.js -v",
+    "build": "browserify src/hoodie-store-pouchdb.js -o dist/hoodie-store-pouchdb.js",
+    "test": "node node_modules/mocha/bin/mocha -R spec test/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,15 @@
   },
   "homepage": "https://github.com/gr2m/hoodie-store-pouchdb.js",
   "dependencies": {
-    "pouchdb": "^3.0.6"
+    "pouchdb": "^3.0.6",
+    "pouchdb-extend": "^0.1.2"
+  },
+  "devDependencies": {
+    "bluebird": "^2.3.11",
+    "browserify": "^6.2.0",
+    "expect.js": "^0.3.1",
+    "memdown": "^1.0.0",
+    "mocha": "^2.0.1",
+    "watchify": "^2.1.1"
   }
 }

@@ -141,19 +141,21 @@ hoodie.store.connect()
 hoodie.store.disconnect()
 ```
 
-### Step 2 (wip)
+### Step 2 ✔
 
 Implement the basic store methods
 
 ```js
 hoodie.store.add(properties)
 hoodie.store.find(id)
+hoodie.store.find(object)
 hoodie.store.findOrAdd(id, properties)
 hoodie.store.findAll()
 hoodie.store.update(id, changedProperties)
 hoodie.store.updateOrAdd(id, properties)
 hoodie.store.updateAll(changedProperties)
 hoodie.store.remove(id)
+hoodie.store.remove(object)
 hoodie.store.removeAll()
 hoodie.store.clear()
 ```
