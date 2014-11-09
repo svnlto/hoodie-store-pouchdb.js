@@ -31,12 +31,12 @@ module.exports = global.hoodie.plugin(function() {
       });
     },
     mapObjectToCouchDbDoc: function (object) {
-      var document = extend({}, object, {_id: object.id});
-      delete document.id;
-      return document;
+      var doc = extend({}, object, {_id: object.id});
+      delete doc.id;
+      return doc;
     },
-    mapCouchDbDocToObject: function (document) {
-      var object = extend({}, document, {id: document._id});
+    mapCouchDbDocToObject: function (doc) {
+      var object = extend({}, doc, {id: doc._id});
       delete object._id;
       return object;
     }
@@ -81,16 +81,16 @@ module.exports = global.hoodie.plugin(function() {
    *
    */
   store.add = function (object) {
-    var document;
+    var doc;
 
     if (!object) {
       return internals.rejectWith('Invalid object');
     }
 
-    document = internals.mapObjectToCouchDbDoc(object);
-    return db.post(document)
-    .then(function (document) {
-      return db.get(document.id);
+    doc = internals.mapObjectToCouchDbDoc(object);
+    return db.post(doc)
+    .then(function (doc) {
+      return db.get(doc.id);
     }).then(internals.mapCouchDbDocToObject);
   };
 
@@ -121,7 +121,7 @@ module.exports = global.hoodie.plugin(function() {
    *
    */
   store.findAll = function () {
-    // this will return all documents currently in the db
+    // this will return all docs currently in the db
     // maybe she should scope this using db.query and
     // a map function instead
     return db.allDocs({
@@ -173,18 +173,18 @@ module.exports = global.hoodie.plugin(function() {
     var updatedObjects;
     return store.findAll()
     .then(function(objects) {
-      var documents;
+      var docs;
       updatedObjects = objects.map(function(object) {
         return extend(object, changedProperties);
       });
-      documents = updatedObjects.map(function(object) {
+      docs = updatedObjects.map(function(object) {
         return internals.mapObjectToCouchDbDoc(object);
       });
-      return db.bulkDocs(documents);
+      return db.bulkDocs(docs);
     })
     .then(function(response) {
-      response.forEach(function(document, i) {
-        updatedObjects[i]._rev = document.rev;
+      response.forEach(function(doc, i) {
+        updatedObjects[i]._rev = doc.rev;
       });
       return updatedObjects;
     });
@@ -199,7 +199,7 @@ module.exports = global.hoodie.plugin(function() {
     .then(function(object) {
       existingObject = object;
       // we can't use store.update, as it depends on
-      // store.find, which will fail after the document
+      // store.find, which will fail after the doc
       // has been removed.
       return db.remove(object.id, object._rev);
     }).then(function(response) {
@@ -215,18 +215,18 @@ module.exports = global.hoodie.plugin(function() {
     var updatedObjects;
     return store.findAll()
     .then(function(objects) {
-      var documents;
+      var docs;
       updatedObjects = objects;
-      documents = objects.map(function(object) {
-        var document = internals.mapObjectToCouchDbDoc(object);
-        document._deleted = true;
-        return document;
+      docs = objects.map(function(object) {
+        var doc = internals.mapObjectToCouchDbDoc(object);
+        doc._deleted = true;
+        return doc;
       });
-      return db.bulkDocs(documents);
+      return db.bulkDocs(docs);
     })
     .then(function(response) {
-      response.forEach(function(document, i) {
-        updatedObjects[i]._rev = document.rev;
+      response.forEach(function(doc, i) {
+        updatedObjects[i]._rev = doc.rev;
       });
       return updatedObjects;
     });
