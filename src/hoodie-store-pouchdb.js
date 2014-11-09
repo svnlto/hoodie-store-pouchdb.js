@@ -5,6 +5,8 @@ var PouchDB = require('pouchdb');
 
 module.exports = global.hoodie.plugin(function() {
   var store = {};
+  this.store = store;
+
   var localDBName = 'hoodie-store';
 
   // var remoteDBName = 'user/' + this.id();
@@ -15,31 +17,43 @@ module.exports = global.hoodie.plugin(function() {
 
   // PRIVATE
   var internals = {
+
     resolve: function () {
       return new Promise(function (resolve) {
         resolve();
       });
     },
+
     resolveWith: function (what) {
       return new Promise(function (resolve) {
         resolve(what);
       });
     },
+
     rejectWith: function (what) {
       return new Promise(function (resolve, reject) {
         reject(new Error(what));
       });
     },
+
     mapObjectToCouchDbDoc: function (object) {
-      var doc = extend({}, object, {_id: object.id});
+      var doc = extend({}, object, {
+        _id: object.id
+      });
+
       delete doc.id;
       return doc;
     },
+
     mapCouchDbDocToObject: function (doc) {
-      var object = extend({}, doc, {id: doc._id});
+      var object = extend({}, doc, {
+        id: doc._id
+      });
+
       delete object._id;
       return object;
     }
+
   };
 
   /**
@@ -88,10 +102,12 @@ module.exports = global.hoodie.plugin(function() {
     }
 
     doc = internals.mapObjectToCouchDbDoc(object);
+
     return db.post(doc)
     .then(function (doc) {
       return db.get(doc.id);
-    }).then(internals.mapCouchDbDocToObject);
+    })
+    .then(internals.mapCouchDbDocToObject);
   };
 
 
@@ -109,7 +125,7 @@ module.exports = global.hoodie.plugin(function() {
   store.findOrAdd = function (id, object) {
     return store.find(id)
     .catch(function() {
-      if (! object) {
+      if (!object) {
         return internals.rejectWith('Invalid object');
       }
       object.id = id;
@@ -126,7 +142,8 @@ module.exports = global.hoodie.plugin(function() {
     // a map function instead
     return db.allDocs({
       'include_docs': true
-    }).then(function (result) {
+    })
+    .then(function (result) {
       return result.rows.map(function (row) {
         return internals.mapCouchDbDocToObject(row.doc);
       });
@@ -158,7 +175,7 @@ module.exports = global.hoodie.plugin(function() {
       return store.update(existingObject.id, properties);
     })
     .catch(function (error) {
-      if (error.message === 'missing' ) {
+      if (error.message === 'missing') {
         properties.id = id;
         return store.add(properties);
       }
@@ -171,6 +188,7 @@ module.exports = global.hoodie.plugin(function() {
    */
   store.updateAll = function (changedProperties) {
     var updatedObjects;
+
     return store.findAll()
     .then(function(objects) {
       var docs;
@@ -195,6 +213,7 @@ module.exports = global.hoodie.plugin(function() {
    */
   store.remove = function (id) {
     var existingObject;
+
     return store.find(id)
     .then(function(object) {
       existingObject = object;
@@ -202,7 +221,8 @@ module.exports = global.hoodie.plugin(function() {
       // store.find, which will fail after the doc
       // has been removed.
       return db.remove(object.id, object._rev);
-    }).then(function(response) {
+    })
+    .then(function(response) {
       existingObject._rev = response.rev;
       return existingObject;
     });
@@ -213,6 +233,7 @@ module.exports = global.hoodie.plugin(function() {
    */
   store.removeAll = function () {
     var updatedObjects;
+
     return store.findAll()
     .then(function(objects) {
       var docs;
@@ -232,6 +253,5 @@ module.exports = global.hoodie.plugin(function() {
     });
   };
 
-  this.store = store;
 });
 
