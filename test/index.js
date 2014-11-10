@@ -39,7 +39,7 @@ describe('hoodie-store-pouchdb', function () {
       .then(function (object) {
         expect(object.foo).to.eql('bar');
         done();
-      }, done);
+      });
     });
 
     it('store.add with object.id', function (done) {
@@ -50,7 +50,7 @@ describe('hoodie-store-pouchdb', function () {
         expect(object.id).to.eql('thing');
         expect(object._id).to.be(undefined);
         done();
-      }, done);
+      });
     });
 
     it('store.add with invalid object', function (done) {
@@ -69,7 +69,7 @@ describe('hoodie-store-pouchdb', function () {
         .then(function (object) {
           expect(object.id).to.eql('exists');
           done();
-        }, done);
+        });
       });
     });
 
