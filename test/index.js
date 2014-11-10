@@ -32,6 +32,7 @@ describe('hoodie-store-pouchdb', function () {
   });
 
   describe('local db interactions', function () {
+
     it('store.add with valid object', function (done) {
       store.add({
         foo: 'bar'
@@ -64,7 +65,8 @@ describe('hoodie-store-pouchdb', function () {
     it('store.find with existing object', function (done) {
       store.add({
         id: 'exists'
-      }).then(function () {
+      })
+      .then(function () {
         store.find('exists')
         .then(function (object) {
           expect(object.id).to.eql('exists');
@@ -80,15 +82,19 @@ describe('hoodie-store-pouchdb', function () {
         done();
       });
     });
+
     it('store.find(object)', function (done) {
       store.add({
         id: 'exists'
-      }).then(function () {
-        store.find({id: 'exists'})
+      })
+      .then(function () {
+        store.find({
+          id: 'exists'
+        })
         .then(function (object) {
           expect(object.id).to.eql('exists');
           done();
-        }, done);
+        });
       });
     });
 
@@ -97,18 +103,24 @@ describe('hoodie-store-pouchdb', function () {
       it('find', function (done) {
         store.add({
           id: 'exists'
-        }).then(function () {
-          return store.findOrAdd('exists', {foo: 'bar'})
+        })
+        .then(function () {
+          return store.findOrAdd('exists', {
+            foo: 'bar'
+          })
           .then(function (object) {
             expect(object.id).to.eql('exists');
             expect(object.foo).to.be(undefined);
             done();
           });
-        }).catch(done);
+        })
+        .catch(done);
       });
 
       it('add', function (done) {
-        store.findOrAdd('thing', {foo: 'bar'})
+        store.findOrAdd('thing', {
+          foo: 'bar'
+        })
         .then(function (object) {
           expect(object.id).to.be('thing');
           expect(object.foo).to.be('bar');
@@ -128,21 +140,23 @@ describe('hoodie-store-pouchdb', function () {
     it('store.findAll', function (done) {
       store.add({
         id: 'exists'
-      }).then(function () {
+      })
+      .then(function () {
         store.findAll()
         .then(function (objects) {
           expect(objects).to.be.an('array');
           expect(objects.length).to.eql(1);
           expect(objects[0].id).to.be('exists');
           done();
-        }, done);
+        });
       });
     });
 
     it('store.update with object', function (done) {
       store.add({
         id: 'exists'
-      }).then(function () {
+      })
+      .then(function () {
         store.update('exists', {
           foo: 'bar'
         })
@@ -167,8 +181,11 @@ describe('hoodie-store-pouchdb', function () {
       it('update', function (done) {
         store.add({
           id: 'exists'
-        }).then(function () {
-          store.updateOrAdd('exists', {foo: 'bar'})
+        })
+        .then(function () {
+          store.updateOrAdd('exists', {
+            foo: 'bar'
+          })
           .then(function (object) {
             expect(parseInt(object._rev)).to.eql(2);
             expect(object.foo).to.eql('bar');
@@ -178,7 +195,9 @@ describe('hoodie-store-pouchdb', function () {
       });
 
       it('add', function (done) {
-        store.findOrAdd('thing', {foo: 'bar'})
+        store.findOrAdd('thing', {
+          foo: 'bar'
+        })
         .then(function (document) {
           expect(parseInt(document._rev, 10)).to.eql(1);
           expect(document.foo).to.eql('bar');
@@ -190,7 +209,8 @@ describe('hoodie-store-pouchdb', function () {
     it('store.updateAll with objects', function (done) {
       store.add({
         id: 'exists'
-      }).then(function () {
+      })
+      .then(function () {
         store.updateAll({
           foo: 'bar'
         })
@@ -219,7 +239,8 @@ describe('hoodie-store-pouchdb', function () {
       store.add({
         id: 'exists',
         foo: 'bar'
-      }).then(function (response) {
+      })
+      .then(function () {
         store.remove('exists')
         .then(function (object) {
           expect(object.foo).to.be('bar');
@@ -240,7 +261,8 @@ describe('hoodie-store-pouchdb', function () {
       store.add({
         id: 'exists',
         foo: 'bar'
-      }).then(function () {
+      })
+      .then(function () {
         store.removeAll()
         .then(function (objects) {
           expect(objects).to.be.an('array');
